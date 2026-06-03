@@ -19,10 +19,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Theme Toggle Logic ---
     const themeToggles = document.querySelectorAll('#themeToggle, #mobileThemeToggle');
-    
+
     // Check saved preference or system preference
     const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
-    
+
     if (savedTheme === 'light') {
         document.body.classList.add('light-theme');
     }
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const firstInput = contactForm.querySelector('input, textarea');
             if (firstInput) firstInput.focus();
         });
-        
+
         // Reset errors when modal is hidden
         contactModal.addEventListener('hidden.bs.modal', () => {
             resetFormErrors();
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 clearError(input);
             }
         });
-        
+
         input.addEventListener('blur', () => {
             if (input.value.trim() === '') {
                 showError(input, 'This field is required');
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     contactForm.addEventListener('submit', (e) => {
         e.preventDefault();
         resetFormErrors();
-        
+
         let isValid = true;
         const nameInput = document.getElementById('formName');
         const emailInput = document.getElementById('formEmail');
@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showError(nameInput, 'Name is required');
             isValid = false;
         }
-        
+
         if (emailInput.value.trim() === '') {
             showError(emailInput, 'Email is required');
             isValid = false;
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showError(emailInput, 'Please enter a valid email address');
             isValid = false;
         }
-        
+
         if (messageInput.value.trim() === '') {
             showError(messageInput, 'Message cannot be empty');
             isValid = false;
@@ -148,12 +148,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const submitBtn = contactForm.querySelector('.btn-submit-form');
         const btnText = submitBtn.querySelector('.btn-text');
         const btnSpinner = submitBtn.querySelector('.spinner');
-        
+
         // State: Loading
         submitBtn.disabled = true;
         btnText.textContent = 'Sending Message...';
         btnSpinner.style.display = 'inline-block';
-        
+
         // Disable inputs
         formInputs.forEach(input => input.disabled = true);
 
@@ -163,11 +163,11 @@ document.addEventListener('DOMContentLoaded', () => {
             btnSpinner.style.display = 'none';
             submitBtn.classList.add('success');
             btnText.innerHTML = '&#10003; Message Sent Successfully!';
-            
+
             // Wait 2 seconds, then close modal and reset form
             setTimeout(() => {
                 closeModal();
-                
+
                 // Reset state for future interactions
                 setTimeout(() => {
                     contactForm.reset();
@@ -179,5 +179,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 2000);
         }, 1500);
     });
+
+    // --- Typewriter Effect ---
+    const typewriter = document.getElementById('typewriter');
+    if (typewriter) {
+        const text = 'IT Consulting';
+        typewriter.innerHTML = text.split('').map((char, index) => {
+            return `<span class="char" style="transition-delay: ${index * 60}ms">${char === ' ' ? '&nbsp;' : char}</span>`;
+        }).join('');
+        
+        // Trigger smooth reveal animation
+        setTimeout(() => {
+            typewriter.classList.add('active');
+        }, 1200);
+    }
 });
 
