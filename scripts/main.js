@@ -2,6 +2,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- DOM Elements ---
     const contactModal = document.getElementById('contactModal');
     const contactForm = document.getElementById('contactForm');
+    const navbar = document.getElementById('navbar');
+
+    // --- Navbar Scroll Effect ---
+    if (navbar) {
+        const handleScroll = () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('nav-scrolled');
+            } else {
+                navbar.classList.remove('nav-scrolled');
+            }
+        };
+        window.addEventListener('scroll', handleScroll);
+        handleScroll(); // Call once on load
+    }
 
     // --- Theme Toggle Logic ---
     const themeToggles = document.querySelectorAll('#themeToggle, #mobileThemeToggle');
