@@ -987,6 +987,9 @@ body.light-theme .header-navbar.nav-scrolled {
         flex-direction: column;
         gap: 1rem;
     }
+    .btn-contact-trigger{
+        width: 100%;
+    }
 }
 
 /* --- Offcanvas Mobile Menu Styling --- */
