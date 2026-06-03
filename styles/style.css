@@ -1484,7 +1484,7 @@ body.light-theme .service-card::after {
     top: -150%;
     left: -150%;
     width: 400%;
-    height: 400%;
+    height: 450%;
     background: conic-gradient(
         var(--accent-primary),
         var(--accent-secondary),
