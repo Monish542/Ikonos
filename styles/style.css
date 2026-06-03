@@ -164,6 +164,7 @@ main {
     background: var(--bg-glass);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
+    overflow: hidden;
 }
 
 main {
@@ -524,6 +525,11 @@ body.light-theme .hero-shape {
     opacity: 0;
     transform: translateY(-20px);
     animation: slideDownFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transition: background 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                height 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                padding 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Brand Logo Styling */
@@ -913,10 +919,68 @@ body.light-theme .hero-shape {
     }
 }
 
+/* --- Sticky Navbar Scroll State --- */
+.header-navbar.nav-scrolled {
+    background: rgba(10, 10, 15, 0.75) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+    height: 70px;
+}
+
+body.light-theme .header-navbar.nav-scrolled {
+    background: rgba(225, 225, 230, 0.85) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+}
+
 /* --- Responsive Media Queries --- */
 @media (max-width: 991px) {
     .header-navbar {
         padding: 0 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --nav-height: 70px;
+    }
+    .header-navbar {
+        padding: 0 1.5rem;
+    }
+    .header-navbar.nav-scrolled {
+        height: 60px;
+    }
+    .nav-logo {
+        font-size: 1.9rem;
+        margin-top: 6px !important;
+    }
+}
+
+@media (max-width: 576px) {
+    :root {
+        --nav-height: 60px;
+    }
+    .header-navbar {
+        padding: 0 1rem;
+    }
+    .header-navbar.nav-scrolled {
+        height: 54px;
+    }
+    .nav-logo {
+        font-size: 1.6rem;
+        margin-top: 4px !important;
+    }
+    .offcanvas-header .nav-logo {
+        font-size: 1.6rem;
+        margin-top: 4px !important;
+    }
+    .btn-theme-toggle {
+        width: 36px;
+        height: 36px;
+    }
+    .btn-theme-toggle svg {
+        width: 16px;
+        height: 16px;
     }
 }
 
@@ -1112,7 +1176,7 @@ body.light-theme .hero-shape {
 
 .service-card {
     /* background: var(--bg-glass); */
-    background: var(--bg-card);
+    background: var(--bg-glass);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--border-light);
@@ -1197,7 +1261,7 @@ body.light-theme .hero-shape {
 
 .stat-card {
     /* background: var(--bg-glass); */
-    background: var(--bg-card);
+    background: var(--bg-glass);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--border-light);
