@@ -962,6 +962,7 @@ body.light-theme .header-navbar.nav-scrolled {
     }
     .header-navbar {
         padding: 0 1rem;
+        overflow-x: hidden;
     }
     .header-navbar.nav-scrolled {
         height: 54px;
