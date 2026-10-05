@@ -455,17 +455,18 @@
                             IKONOS<span class="logo-dot"></span>
                         </a>
                         <p class="footer-desc mb-4">We design, engineer, and consult on premium hardware systems and custom software environments for visionaries.</p>
-                        <div class="footer-social-links d-flex gap-3">
+                        <div class="footer-social-links d-flex gap-3 mb-3">
                             <a href="https://www.linkedin.com/company/ikonos-technologies/" target="_blank" aria-label="LinkedIn">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
                             </a>
                             <!-- <a href="#" aria-label="Twitter">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
-                            </a>
-                            <a href="#" aria-label="GitHub">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
                             </a> -->
+                            <a href="mailto:info@ikonostechnologies.com" aria-label="Email Us">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                            </a>
                         </div>
+                        <p class="footer-email m-0"><a href="mailto:info@ikonostechnologies.com" class="text-decoration-none text-light small fw-semibold">info@ikonostechnologies.com</a></p>
                     </div>
                     <!-- Services Links Column -->
                     <div class="col-lg-3 col-md-6">
@@ -506,31 +507,51 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content border-0">
                     <button type="button" class="btn-close-custom" id="modalCloseBtn" data-bs-dismiss="modal" aria-label="Close modal">&times;</button>
-                    <div class="modal-header-desc">
-                        <h2 class="modal-title" id="modalTitle">Let's Create Together</h2>
-                        <p class="modal-subtitle" id="modalSubtitle">Tell us about your project and we'll get back to you shortly.</p>
+                    <div id="formBody">
+                        <div class="modal-header-desc">
+                            <h2 class="modal-title" id="modalTitle">Let's Create Together</h2>
+                            <p class="modal-subtitle" id="modalSubtitle">Tell us about your project and we'll get back to you shortly.</p>
+                        </div>
+                        <form class="contact-form" id="contactForm" action="sendmail.php" method="POST" novalidate>
+                            <div class="form-floating mb-3">
+                                <input type="text" id="formName" name="name" class="form-control" placeholder="Full Name" required />
+                                <label for="formName">Full Name</label>
+                                <span class="error-message" id="nameError">This field is required</span>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="email" id="formEmail" name="email" class="form-control" placeholder="Email Address" required />
+                                <label for="formEmail">Email Address</label>
+                                <span class="error-message" id="emailError">Please enter a valid email address</span>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="tel" id="formPhone" name="phone" class="form-control" placeholder="Phone Number" />
+                                <label for="formPhone">Phone (Optional)</label>
+                            </div>
+                            <div class="form-floating mb-4">
+                                <textarea id="formMessage" name="message" class="form-control" placeholder="Project Details / Message" style="height: 110px;" required></textarea>
+                                <label for="formMessage">Project Details / Message</label>
+                                <span class="error-message" id="messageError">Message cannot be empty</span>
+                            </div>
+                            <div class="form-global-error mb-3" id="formGlobalError" style="display: none;"></div>
+                            <button type="submit" class="btn-submit-form w-100" id="btnSubmitForm">
+                                <span class="btn-text">Send Message</span>
+                                <div class="spinner" id="formSpinner"></div>
+                            </button>
+                        </form>
                     </div>
-                    <form class="contact-form" id="contactForm" novalidate>
-                        <div class="form-floating mb-4">
-                            <input type="text" id="formName" class="form-control" placeholder="Full Name" required />
-                            <label for="formName">Full Name</label>
-                            <span class="error-message" id="nameError">This field is required</span>
+
+                    <!-- Animated Success State View -->
+                    <div class="form-success-container" id="formSuccessContainer" style="display: none;">
+                        <div class="success-icon-wrapper mb-4">
+                            <svg class="checkmark-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                <circle class="checkmark-circle" cx="26" cy="26" r="24" fill="none"/>
+                                <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                            </svg>
                         </div>
-                        <div class="form-floating mb-4">
-                            <input type="email" id="formEmail" class="form-control" placeholder="Email Address" required />
-                            <label for="formEmail">Email Address</label>
-                            <span class="error-message" id="emailError">Please enter a valid email address</span>
-                        </div>
-                        <div class="form-floating mb-4">
-                            <textarea id="formMessage" class="form-control" placeholder="Project Details / Message" style="height: 120px;" required></textarea>
-                            <label for="formMessage">Project Details / Message</label>
-                            <span class="error-message" id="messageError">Message cannot be empty</span>
-                        </div>
-                        <button type="submit" class="btn-submit-form w-100" id="btnSubmitForm">
-                            <span class="btn-text">Send Message</span>
-                            <div class="spinner" id="formSpinner"></div>
-                        </button>
-                    </form>
+                        <h3 class="success-title">Thank You!</h3>
+                        <p class="success-message">Thank you for contacting <strong>IKONOS</strong>. Our team will reach you within 24hrs.</p>
+                        <button type="button" class="btn btn-primary rounded-pill px-5 py-2.5 mt-3 btn-success-close" data-bs-dismiss="modal">Close</button>
+                    </div>
                 </div>
             </div>
         </div>

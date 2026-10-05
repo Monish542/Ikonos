@@ -36,16 +36,36 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Bootstrap Modal Listeners ---
+    const formBody = document.getElementById('formBody');
+    const formSuccessContainer = document.getElementById('formSuccessContainer');
+
     if (contactModal) {
         // Focus first field when modal is open
         contactModal.addEventListener('shown.bs.modal', () => {
-            const firstInput = contactForm.querySelector('input, textarea');
-            if (firstInput) firstInput.focus();
+            if (formBody && formBody.style.display !== 'none') {
+                const firstInput = contactForm.querySelector('input, textarea');
+                if (firstInput) firstInput.focus();
+            }
         });
 
-        // Reset errors when modal is hidden
+        // Reset form and view state when modal is hidden
         contactModal.addEventListener('hidden.bs.modal', () => {
             resetFormErrors();
+            if (contactForm) contactForm.reset();
+            const submitBtn = contactForm ? contactForm.querySelector('.btn-submit-form') : null;
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('success');
+                const btnText = submitBtn.querySelector('.btn-text');
+                const btnSpinner = submitBtn.querySelector('.spinner');
+                if (btnText) btnText.textContent = 'Send Message';
+                if (btnSpinner) btnSpinner.style.display = 'none';
+            }
+            const formInputs = contactForm ? contactForm.querySelectorAll('input, textarea') : [];
+            formInputs.forEach(input => input.disabled = false);
+            
+            if (formBody) formBody.style.display = 'block';
+            if (formSuccessContainer) formSuccessContainer.style.display = 'none';
         });
     }
 
@@ -80,9 +100,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    const formGlobalError = document.getElementById('formGlobalError');
+
     const resetFormErrors = () => {
         const formGroups = contactForm.querySelectorAll('.form-floating');
         formGroups.forEach(group => group.classList.remove('has-error'));
+        if (formGlobalError) {
+            formGlobalError.style.display = 'none';
+            formGlobalError.textContent = '';
+        }
+    };
+
+    const showGlobalError = (message) => {
+        if (formGlobalError) {
+            formGlobalError.textContent = message;
+            formGlobalError.style.display = 'block';
+        }
     };
 
     // Remove error classes when typing or focusing
@@ -91,6 +124,9 @@ document.addEventListener('DOMContentLoaded', () => {
         input.addEventListener('input', () => {
             if (input.value.trim() !== '') {
                 clearError(input);
+            }
+            if (formGlobalError) {
+                formGlobalError.style.display = 'none';
             }
         });
 
@@ -144,7 +180,11 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Form is valid - Trigger submission micro-animation
+        // --- CRITICAL FIX: Construct FormData BEFORE disabling inputs! ---
+        // Disabled form elements are excluded from FormData serialization in browser DOM.
+        const formData = new FormData(contactForm);
+
+        // Form is valid - Send AJAX POST to sendmail.php
         const submitBtn = contactForm.querySelector('.btn-submit-form');
         const btnText = submitBtn.querySelector('.btn-text');
         const btnSpinner = submitBtn.querySelector('.spinner');
@@ -154,30 +194,42 @@ document.addEventListener('DOMContentLoaded', () => {
         btnText.textContent = 'Sending Message...';
         btnSpinner.style.display = 'inline-block';
 
-        // Disable inputs
+        // Disable inputs during network request
         formInputs.forEach(input => input.disabled = true);
 
-        // Simulate API post (1.5 seconds delay)
-        setTimeout(() => {
-            // State: Success
-            btnSpinner.style.display = 'none';
-            submitBtn.classList.add('success');
-            btnText.innerHTML = '&#10003; Message Sent Successfully!';
-
-            // Wait 2 seconds, then close modal and reset form
-            setTimeout(() => {
-                closeModal();
-
-                // Reset state for future interactions
-                setTimeout(() => {
-                    contactForm.reset();
-                    formInputs.forEach(input => input.disabled = false);
+        fetch(contactForm.getAttribute('action') || 'sendmail.php', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                btnSpinner.style.display = 'none';
+                if (data.status === 'success') {
+                    if (formBody) formBody.style.display = 'none';
+                    if (formSuccessContainer) {
+                        formSuccessContainer.style.display = 'block';
+                        // Restart SVG animations
+                        const svg = formSuccessContainer.querySelector('.checkmark-svg');
+                        if (svg) {
+                            const newSvg = svg.cloneNode(true);
+                            svg.parentNode.replaceChild(newSvg, svg);
+                        }
+                    }
+                } else {
                     submitBtn.disabled = false;
-                    submitBtn.classList.remove('success');
+                    formInputs.forEach(input => input.disabled = false);
                     btnText.textContent = 'Send Message';
-                }, 500);
-            }, 2000);
-        }, 1500);
+                    showGlobalError(data.message || 'Failed to send message. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting form:', error);
+                btnSpinner.style.display = 'none';
+                submitBtn.disabled = false;
+                formInputs.forEach(input => input.disabled = false);
+                btnText.textContent = 'Send Message';
+                showGlobalError('An error occurred while sending. Please try again.');
+            });
     });
 
     // --- Typewriter Effect ---
@@ -187,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
         typewriter.innerHTML = text.split('').map((char, index) => {
             return `<span class="char" style="transition-delay: ${index * 60}ms">${char === ' ' ? '&nbsp;' : char}</span>`;
         }).join('');
-        
+
         // Trigger smooth reveal animation
         setTimeout(() => {
             typewriter.classList.add('active');
