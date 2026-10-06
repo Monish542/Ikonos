@@ -1,11 +1,15 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <title>Ikonos — Premium Modern Creative Agency</title>
+        <title>Ikonos-Technologies</title>
         <!-- Required meta tags -->
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="Ikonos is a modern, forward-thinking creative agency designing premium experiences for global brands. Contact us to kickstart your next project." />
+
+        <!-- Favicon -->
+        <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+        <link rel="alternate icon" type="image/jpeg" href="assets/favicon.jpg" />
 
         <!-- Bootstrap CSS v5.3.8 (Optional helper grid/utilities) -->
         <link
